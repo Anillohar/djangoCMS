@@ -1,0 +1,166 @@
+{% extends "html/base.html" %}
+{% block content %}
+	<section class="content-header">
+		<h1>
+			User Management
+		</h1>
+
+	</section>
+	<section style="margin-top: 20px;">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 ">
+				<form method="get" action="#" accept-charset="UTF-8" role="form" class="mws-form">
+					<div class="col-md-2 col-sm-2">
+						<div class="form-group ">
+							<input class="form-control" placeholder="Name" name="q" type="text" formmethod="get">
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<div class="form-group ">
+							<input class="form-control" placeholder="Email" name="e" type="text" formmethod="get">
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<div class="form-group ">
+							<input class="form-control" placeholder="Phone Number" name="p" type="text" formmethod="get">
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<div class="form-group ">
+							<input class="form-control" placeholder="Username" name="u" type="text" formmethod="get">
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-3">
+						<button class="btn btn-primary" type="submit" formmethod="get"><i class='fa fa-search '></i> Search</button>
+						<a href="#"  class="btn btn-primary"><i class='fa fa-refresh '></i> Reset</a>
+					</div>
+				</form>
+			</div>
+           <div class="row">
+               <div class="col-md-7 col-sm-7">
+
+               </div>
+                <div class="col-md-4 col-sm-4 ">
+				<div class="form-group pull-right">
+					<a href="{% url 'addnew' %}" class="btn btn-info btn-small align" id="getCsvData">Add New User</a>
+				</div>
+				<div style="display:none;">
+					<form method="POST" action="#" accept-charset="UTF-8" role="form" class="mws-form" id="csv_form" enctype="multipart/form-data"><input name="_token" type="hidden" value="aPnwRXUPy1jrHNVtH7XztsuxEZuvOKO91GA08dOv">
+					<input id="csv_file" name="file" type="file">
+					</form>
+				</div>
+			    </div>
+             </div>
+        </div>
+    </section>
+  {% csrf_token %}
+    {{ form.non_field_errors }}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field.errors }}
+    {{ hidden_field }}
+  {% endfor %}
+	<div class="box">
+		<div class="box-body ">
+            <table class="table table-hover">
+				<thead>
+			        	<tr>
+                        <th width="5%">
+                            {% if 'FullName' and 'asec' in fullurl %}
+                                  <a href="?sortby=FullName&orderby=desc{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">Full name</a>
+                            {% else %}
+                                  <a href="?sortby=FullName&orderby=asec{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">Full name</a>
+                            {% endif %}
+						</th>
+						<th width="10%">
+							{% if 'Email' and 'asec' in fullurl %}
+                                  <a href="?sortby=Email&orderby=desc{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">Email</a>
+                            {% else %}
+                                  <a href="?sortby=Email&orderby=asec{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">Email</a>
+                            {% endif %}
+						</th>
+						<th width="10%">
+                            {% if 'Username' and 'asec' in fullurl %}
+                                  <a href="?sortby=Username&orderby=desc{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">Username</a>
+                            {% else %}
+                                  <a href="?sortby=Username&orderby=asec{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">Username</a>
+                            {% endif %}
+						</th>
+						<th width="10%">
+							<a href="#" class="sorting">Phone Number</a>
+						</th>
+						<th width="10%">
+							<a href="#" class="sorting">Status</a>
+						</th>
+						<th width="10%">
+							<a href="#" class="sorting">Created On</a>
+						</th>
+						<th width="15%"><a href="#" class="sorting">Actions</a></th>
+			            </tr>
+				</thead>
+				<tbody id="powerwidgets">
+                 {% for i in AddNewUser %}
+			    	<tr class="items-inner">
+						<td data-th='Fullname'>{{ i.FullName }}</td>
+						<td data-th='Email'>{{ i.Email }}</td>
+						<td data-th='Username'>{{ i.Username }}</td>
+						<td data-th='PhoneNumber'>{{ i.PhoneNumber }}</td>
+						<td data-th='Status'>
+									<span class="label label-success" >{% if i.Active == 1 %}Activated{% else %}Deactivated{% endif %}</span>
+                        </td>
+                        <td data-th="CreatedOn">{{ i.CreatedOn }}</td>
+						<td data-th='Action'>
+							<div class="btn-group action_box">
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									Actions <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+                                        <a class="btn-link" href='{% url 'delete_user11' i.id %}'>Delete</a>									</li>
+						    		</li>
+									<li>
+                                        <a class="btn-link" href='{% url 'edit' i.id %}'>Edit</a>									</li>
+									</li>
+									<li>
+                                         <a class="btn-link" href='{% url 'active' i.id %}'>Click to active</a>									</li>
+									</li>
+                                    <li>
+                                         <a class="btn-link" href='{% url 'deactive' i.id %}'>Click to deactive</a>									</li>
+									</li>
+								</ul>
+							</div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody></table></div></div>
+
+
+{% if AddNewUser.has_other_pages %}
+<nav class="navbar" style="padding-left: 28vw">
+    <ul class="pagination">
+     {% if AddNewUser.has_previous %}
+       <li class="page-item"><a class="page-link" href="?page={{ AddNewUser.previous_page_number }}&sortby={{ sortby }}&orderby={{ orderby }}{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">&laquo;</a></li>
+     {% else %}
+          <li class="page-item disabled"><span>&laquo;</span></li>
+     {% endif %}
+     {% for i in AddNewUser.paginator.page_range %}
+        {% if AddNewUser.number == i %}
+            <li class="active page-item"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+             <li class="page-item">
+
+                 <a  class="page-link" href="?page={{ i }}&sortby={{ sortby }}&orderby={{ orderby }}{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">{{ i }}</a></li>
+        {% endif %}
+    {% endfor %}
+     {% if AddNewUser.has_next %}
+       <li class="page-item">
+                 <a  class="page-link" href="?page={{ AddNewUser.next_page_number }}&sortby={{ sortby }}&orderby={{ orderby }}{% if 'q' in fullurl %}&q={{ query_fullname }}&e={{ query_email }}&p={{ query_phonenumber }}&u={{ query_username }}{% endif %}">&raquo;</a></li>
+
+     {% else %}
+          <li class="page-item disabled"><span>&raquo;</span></li>
+     {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

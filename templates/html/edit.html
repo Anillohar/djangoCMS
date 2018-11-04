@@ -1,0 +1,188 @@
+  {% extends "html/base.html" %}
+{% load i18n widget_tweaks %}
+{% block content %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="margin-left: 10px">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+      Add New User
+      </h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="{% url 'UserManagement' %}">User Management</a></li>
+        <li class="active">Add New User</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- SELECT2 EXAMPLE -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Enter the following informations:</h3>
+
+        <!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <form role="form" method="post" novalidate enctype="multipart/form-data">
+            <div class="col-md-6">
+              <!-- general form elements -->
+            <!-- /.box-header -->
+            <!-- form start -->
+
+                  {% csrf_token %}
+                  {{ form.non_field_errors }}
+                  {% for hidden_field in form.hidden_fields %}
+                     {{ hidden_field.errors }}
+                     {{ hidden_field }}
+                  {% endfor %}
+
+
+                    <div class="form-group">
+                            <label  for="FullName">
+                                Full name
+                            </label>
+                            <input class="form-control" id="FullName" maxlength="30" name="FullName" value="{{ instance.FullName }}" type="text">
+
+                                        {% for error in form.FullName.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                            <label for="Email">
+                                Email
+                            </label>
+                            <input  class="form-control" id="Email" maxlength="30" value="{{ instance.Email }}" name="Email" type="email">
+
+                                        {% for error in form.Email.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+
+                    <div class="form-group">
+                            <label for="Username">
+                                Username
+                            </label>
+                            <input class="form-control" id="Username" maxlength="30" name="Username" value="{{ instance.Username }}" type="text">
+
+                                        {% for error in form.Username.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+
+                    </div>
+
+                    <div class="form-group">
+                            <label for="PhoneNumber">
+                                Phone Number
+                            </label>
+                            <input class="form-control" id="PhoneNumber" maxlength="30" name="PhoneNumber" value="{{ instance.PhoneNumber }}" type="number">
+
+                                        {% for error in form.PhoneNumber.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+
+                    </div>
+
+                    <div class="form-group">
+                            <label for="ProfileImage">
+                                Profile Image
+                            </label>
+                            <input id="ProfileImage" name="ProfileImage" type="file" value="{{ instance.ProfileImage }}">
+
+                                        {% for error in form.ProfileImage.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+            </div>
+            <div class="col-md-6">
+                    <div class="form-group">
+                            <label for="AddressLine1">
+                                Address Line 1
+                            </label>
+                            <input class="form-control"  id="AddressLine1" maxlength="30"  name="AddressLine1" value="{{ instance.AddressLine1 }}" type="text">
+
+                                        {% for error in form.AddressLine1.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+                                <div class="form-group">
+                            <label for="AddressLine2">
+                                Address Line 2
+                            </label>
+                            <input class="form-control"  id="AddressLine2" name="AddressLine2" value="{{ instance.AddressLine2 }}" type="text">
+
+                                        {% for error in form.AddressLine2.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+                                <div class="form-group">
+                            <label for="City">
+                                City
+                            </label>
+                            <input class="form-control"  id="City" name="City" type="text" value="{{ instance.City }}">
+
+                                        {% for error in form.City.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+                                <div class="form-group">
+                            <label for="State">
+                                State
+                            </label>
+                            <input  class="form-control" id="State" name="State" value="{{ instance.State }}" type="text">
+
+                                        {% for error in form.State.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+                                <div class="form-group">
+                            <label for="Country">
+                                Country
+                            </label>
+                            <input class="form-control"  id="Country" name="Country" value="{{ instance.Country }}" type="text">
+
+                                        {% for error in form.Country.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+                                <div class="form-group">
+                            <label for="Zip">
+                                Zip
+                            </label>
+                            <input class="form-control"  id="Zip" name="Zip" type="text" value="{{ instance.Zip }}">
+
+                                        {% for error in form.Zip.errors %}
+                                            <span class="list-unstyled text-danger">{{ error|escape }}</span>
+                                        {% endfor %}
+
+                    </div>
+
+
+            </div>
+            <!-- /.col -->
+                        <div class="box-footer">
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+            </form>
+          </div>
+          <!-- /.row -->
+        </div>
+
+        </div>
+        <!-- /.box -->
+    </section>
+
+  </div>
+{% endblock %}

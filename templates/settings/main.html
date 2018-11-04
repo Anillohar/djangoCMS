@@ -1,0 +1,141 @@
+{% extends "html/base.html" %}
+{% block content %}
+	<section class="content-header">
+		<h1>
+			Settings
+		</h1>
+              <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                  <li class="active">Settings</li>
+
+      </ol>
+	</section>
+	<section style="margin-top: 20px;">
+		<div class="row">
+			<div class="col-md-12 col-sm-12 ">
+				<form method="get" action="#" accept-charset="UTF-8" role="form" class="mws-form">
+					<div class="col-md-2 col-sm-2">
+						<div class="form-group ">
+							<input class="form-control" placeholder="Title" name="q" type="text" formmethod="get">
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<div class="form-group ">
+							<input class="form-control" placeholder="Key" name="p" type="text" formmethod="get">
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-2">
+						<div class="form-group ">
+							<input class="form-control" placeholder="Value" name="u" type="text" formmethod="get">
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-3">
+						<button class="btn btn-primary" type="submit" formmethod="get"><i class='fa fa-search '></i> Search</button>
+						<a href="#"  class="btn btn-primary"><i class='fa fa-refresh '></i> Reset</a>
+					</div>
+				</form>
+                                <div class="col-md-3 col-sm-3 ">
+				<div class="form-group pull-right">
+					<a href="{% url 'addsettings' %}" class="btn btn-success btn-large align-right">Add New Setting</a>
+				</div>
+			</div>
+
+            </div></div>
+    </section>
+  {% csrf_token %}
+    {{ form.non_field_errors }}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field.errors }}
+    {{ hidden_field }}
+  {% endfor %}
+	<div class="box">
+		<div class="box-body ">
+            <table class="table table-hover">
+				<thead>
+			        	<tr>
+                        <th width="10%">
+                            {% if 'title' and 'asec' in fullurl %}
+                                  <a href="?sortby=title&orderby=desc{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">Title</a>
+                            {% else %}
+                                  <a href="?sortby=title&orderby=asec{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">Title</a>
+                            {% endif %}
+						</th>
+                         						<th width="10%">
+                            {% if 'key' and 'asec' in fullurl %}
+                                  <a href="?sortby=key&orderby=desc{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">Key</a>
+                            {% else %}
+                                  <a href="?sortby=key&orderby=asec{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">Key</a>
+                            {% endif %}
+						</th>
+                         <th width="10%">
+							{% if 'value' and 'asec' in fullurl %}
+                                  <a href="?sortby=value&orderby=desc{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">Value</a>
+                            {% else %}
+                                  <a href="?sortby=value&orderby=asec{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">Value</a>
+                            {% endif %}
+						</th>
+                        <th width="10%">
+                           <a href="#"> Action</a>
+                        </th>
+
+			            </tr>
+				</thead>
+				<tbody id="powerwidgets">
+                 {% for i in AddNewUser %}
+			    	<tr class="items-inner">
+						<td data-th='title'>{{ i.title }}</td>
+						<td data-th='key'>{{ i.key }}</td>
+						<td data-th='value'>{{ i.value }}</td>
+						<td data-th='Action'>
+							<div class="btn-group action_box">
+								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									Actions <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a class="btn-link" href='{% url 'editsettings' i.id %}'>Edit</a>
+                                    </li>
+                                    <li>
+                                        <a class="btn-link" href="{% url 'deletesettings' i.id %}">Delete</a>
+                                    </li>
+								</ul>
+							</div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody></table></div>
+
+{% if AddNewUser.has_other_pages %}
+    	<div class="box-footer clearfix">
+			<div class="col-md-3 col-sm-4 "></div>
+			<div class="col-md-9 col-sm-8 text-right ">
+<nav class="navbar">
+    <ul class="pagination">
+     {% if AddNewUser.has_previous %}
+       <li class="page-item"><a class="page-link" href="?page={{ AddNewUser.previous_page_number }}&sortby={{ sortby }}&orderby={{ orderby }}{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">&laquo;</a></li>
+     {% else %}
+          <li class="page-item disabled"><span>&laquo;</span></li>
+     {% endif %}
+     {% for i in AddNewUser.paginator.page_range %}
+        {% if AddNewUser.number == i %}
+            <li class="active page-item"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+             <li class="page-item">
+
+                 <a  class="page-link" href="?page={{ i }}&sortby={{ sortby }}&orderby={{ orderby }}{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">{{ i }}</a></li>
+        {% endif %}
+    {% endfor %}
+     {% if AddNewUser.has_next %}
+       <li class="page-item">
+                 <a  class="page-link" href="?page={{ AddNewUser.next_page_number }}&sortby={{ sortby }}&orderby={{ orderby }}{% if 'q' in fullurl %}&q={{ query_title }}&p={{ query_key }}&u={{ query_value }}{% endif %}">&raquo;</a></li>
+
+     {% else %}
+          <li class="page-item disabled"><span>&raquo;</span></li>
+     {% endif %}
+  </ul>
+</nav>
+    </div></div>
+{% endif %}</div>
+
+{% endblock %}
